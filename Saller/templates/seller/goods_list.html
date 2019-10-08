@@ -1,0 +1,79 @@
+{% extends 'seller/base.html' %}
+
+
+{% block  title%}
+    商品列表
+{% endblock %}
+
+{% block label %}
+    商品列表 <a href="/Saller/goods_add">增加商品</a>
+{% endblock %}
+
+
+
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>商品编号</th>
+                <th>商品名称</th>
+                <th>商品价格</th>
+                <th>商品数量</th>
+                <th>商品产地</th>
+                <th>商品保质期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for one in page_obj  %}
+            <tr>
+                <td>{{one.goods_number }}</td>
+                <td>{{one.goods_name  }}</td>
+                <td>{{one.goods_price }}</td>
+                <td>{{one.goods_count  }}</td>
+                <td>{{one.goods_location  }}</td>
+                <td>{{one.goods_safe_date }}</td>
+                <th>
+                    <button class="btn btn-primary">修改</button>
+                    {% if one.goods_status == 1 %}
+                        <input href="/goods_status/down/{{ one.id }}" type="button" class="btn btn-warning" value="下架">
+
+                    {% else %}
+                        <input href="/goods_status/up/{{ one.id }}" type="button" class="btn btn-warning" value="上架">
+                    {% endif %}
+{#                    <input type="button" value="修改">#}
+{#                    <input type="button" value="下架">#}
+                </th>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot></tfoot>
+    </table>
+
+
+    <ul style="float:right;margin-right: 50px" class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="paginate_button page-item previous">
+                <a href="/goods_list/{{ page_obj.previous_page_number  }}"  >上一页</a>
+            </li>
+        {% endif %}
+            {% for page in paginator.page_range %}
+                <li class="paginate_button page-item previous">
+                    {% if status == "1" %}
+                        <a href="/goods_list/1/{{ page }}/" >{{ page }}</a>
+                    {% else %}
+                        <a href="/goods_list/0/{{ page }}/" >{{ page }}</a>
+                    {% endif  %}
+                </li>
+            {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="paginate_button page-item previous">
+                <a href="/goods_list/s{{ page_obj.next_page_number  }}" >下一页</a>
+            </li>
+        {% endif %}
+    </ul>
+
+
+
+
+{% endblock %}
